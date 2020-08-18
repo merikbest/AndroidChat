@@ -1,7 +1,6 @@
 package com.example.androidchat.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.androidchat.MessageActivity;
 import com.example.androidchat.R;
 import com.example.androidchat.model.Chat;
-import com.example.androidchat.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -61,6 +58,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             Glide.with(mContext).load(imageurl).into(holder.profile_image);
         }
 
+        if (position == mChat.size() - 1) {
+            if (chat.isIsseen()) {
+                holder.txt_seen.setText("Seen");
+            } else {
+                holder.txt_seen.setText("Delivered");
+            }
+        } else {
+            holder.txt_seen.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -71,12 +77,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView show_message;
         public ImageView profile_image;
+        public TextView txt_seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
+            txt_seen = itemView.findViewById(R.id.txt_seen);
         }
     }
 
